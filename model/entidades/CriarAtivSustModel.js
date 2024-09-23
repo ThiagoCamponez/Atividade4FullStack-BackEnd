@@ -157,8 +157,27 @@ class CriarAtivSustModel {
 
     // Métodos de CRUD usando database
     async obterTodos() {
-        const listaAtivSust = await database.ExecutaComando('SELECT * FROM criarativsust ORDER BY criar_nome ASC');
+        const listaAtivSust = await database.ExecutaComando(`
+            SELECT 
+                criarativsust.criar_id,
+                criarativsust.criar_nome,
+                criarativsust.criar_cpf,
+                criarativsust.criar_contato,
+                criarativsust.criar_data,
+                cadtipoativsust.nome AS tipo_atividade
+            FROM 
+                criarativsust
+            JOIN 
+                cadtipoativsust ON criarativsust.id = cadtipoativsust.id
+            ORDER BY 
+                criarativsust.criar_nome ASC
+        `);
         return listaAtivSust;
+    }
+
+    async obterTiposAtividades() {
+        const tiposAtividades = await database.ExecutaComando('SELECT * FROM cadtipoativsust ORDER BY nome ASC');
+        return tiposAtividades;
     }
 
     async obterPorId(id) {
@@ -195,7 +214,7 @@ class CriarAtivSustModel {
             dadosAtividade.criar_nome, dadosAtividade.criar_cpf, dadosAtividade.criar_contato, dadosAtividade.criar_endereco,
             dadosAtividade.criar_bairro, dadosAtividade.criar_numero, dadosAtividade.id,
             dadosAtividade.criar_data, dadosAtividade.criar_horarioInicial, dadosAtividade.criar_horarioFinal,
-            dadosAtividade.criar_descricao, this.#id
+            dadosAtividade.criar_descricao, this.#id // Certifique-se de que o ID está definido
         ];
         await database.ExecutaComandoNonQuery(query, valores);
     }
