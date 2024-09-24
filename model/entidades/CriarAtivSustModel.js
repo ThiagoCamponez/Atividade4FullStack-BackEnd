@@ -180,8 +180,8 @@ class CriarAtivSustModel {
         return tiposAtividades;
     }
 
-    async obterPorId(id) {
-        const result = await database.ExecutaComando('SELECT * FROM criarativsust WHERE criar_id = ?', [id]);
+    async obterPorId(criar_id) {
+        const result = await database.ExecutaComando('SELECT * FROM criarativsust WHERE criar_id = ?', [criar_id]);
         return result[0];
     }
 
